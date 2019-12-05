@@ -1,6 +1,6 @@
 {
   "name": "router-store",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Keep your history in sync with react-router",
   "main": "lib/index.js",
   "scripts": {
@@ -25,11 +25,6 @@
     "url": "https://github.com/caijf/router-store/issues"
   },
   "homepage": "https://github.com/caijf/router-store#readme",
-  "dependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4"
-  },
   "babel": {
     "presets": [
       [
@@ -57,5 +52,10 @@
         }
       ]
     ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4"
   }
 }
