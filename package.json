@@ -1,0 +1,61 @@
+{
+  "name": "router-store",
+  "version": "1.0.0",
+  "description": "Keep your history in sync with react-router",
+  "main": "lib/index.js",
+  "scripts": {
+    "build:lib-development": "rm -rf lib && babel src --out-dir lib --source-maps inline",
+    "build": "rm -rf lib && babel src --out-dir lib",
+    "pub": "npm run build && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caijf/router-store.git"
+  },
+  "keywords": [
+    "react",
+    "router",
+    "react-router",
+    "router-store",
+    "store"
+  ],
+  "author": "caijf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caijf/router-store/issues"
+  },
+  "homepage": "https://github.com/caijf/router-store#readme",
+  "dependencies": {
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "browsers": [
+              "> 1%",
+              "last 4 versions",
+              "Firefox ESR",
+              "not ie < 9"
+            ]
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      [
+        "@babel/transform-modules-umd",
+        {
+          "globals": {
+            "index": "utilHelpers"
+          },
+          "exactGlobals": true
+        }
+      ]
+    ]
+  }
+}
