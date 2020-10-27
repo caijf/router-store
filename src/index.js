@@ -1,76 +1,27 @@
-import { createHashHistory, createBrowserHistory, createMemoryHistory } from 'history';
+let routerHistory; // 单实例
 
-// 默认历史记录类型
-const defaultHistoryType = 'hash';
+const instances = {}; // 多实例
 
-// 映射创建 history 值
-const createHistoryTypes = {
-  hash: createHashHistory,
-  browser: createBrowserHistory,
-  memory: createMemoryHistory
-}
-
-/**
- * 获取 history 对象
- * @param {String} type 历史记录类型
- */
-function getHistory(type = defaultHistoryType){
-  const history = type && createHistoryTypes[type] ? createHistoryTypes[type]() : null;
-  return history;
-}
-
-// 单例
-export let routerHistory = null;
-
-/**
- * 同步 history 对象，单例
- * @param {String} type 
- */
-export const syncHistory = ({
-  type = defaultHistoryType,
-  ...rest
-} = {}) => {
-  let tmpHistory = getHistory(type);
-
-  // 自定义 history
-  if(rest && rest.history && typeof rest.history === 'object'){
-    tmpHistory = rest.history;
+// 同步路由history
+function syncRouterHistory(his, key = '') {
+  if (key) {
+    instances[key] = his;
+  } else {
+    routerHistory = his;
   }
-
-  // 缓存 history 引用
-  routerHistory = tmpHistory;
-
-  return tmpHistory;
+  return his;
 }
 
-// 多个实例
-const instances = {};
-
-/**
- * 
- * @param {String} flag 多个实例的标识
- */
-export function getRouterHistoryByFlag(flag){
-  return flag && instances[flag] ? instances[flag] : null;
+// 获取路由history
+function getRouterHistory(key = '') {
+  if (key) {
+    return instances[key];
+  }
+  return routerHistory;
 }
 
-/**
- * 同步 history 对象，多个实例
- */
-export const syncHistoryWithFlag = (flag = '', {
-  type = defaultHistoryType,
-  ...rest
-} = {})=>{
-  let tmpHistory = getHistory(type);
-
-  // 自定义 history
-  if(rest && rest.history && typeof rest.history === 'object'){
-    tmpHistory = rest.history;
-  }
-
-  if(flag){
-    instances[flag] = tmpHistory;
-  }
-
-  return tmpHistory;
+export {
+  syncRouterHistory,
+  getRouterHistory,
+  routerHistory
 }

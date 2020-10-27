@@ -4,15 +4,6 @@
 
 项目中同步你的历史记录是很有必要的。比如你在请求模块中判断登录超时，直接跳转到登录页。
 
-- [安装](#安装)
-- [使用](#使用)
-- [API](#API)
-  - [syncHistory](#syncHistory)
-  - [routerHistory](#routerHistory)
-  - [syncHistoryWithFlag](#syncHistoryWithFlag)
-  - [getRouterHistoryByFlag](#getRouterHistoryByFlag)
-- [其他示例](#其他示例)
-
 ## 安装
 
 ```shell
@@ -28,13 +19,16 @@ npm install router-store
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createHashHistory } from "history";
 import { Router } from 'react-router';
-import { syncHistory } from "router-store";
+import { syncRouterHistory } from "router-store";
 
-const history = syncHistory();
+const hashHistory = createHashHistory();
+
+syncRouterHistory(hashHistory);
 
 ReactDOM.render(
-  <Router history={history}>
+  <Router history={hashHistory}>
     {
       // 页面路由
     }
@@ -63,70 +57,36 @@ export default function request(){
 
 ## API
 
-### syncHistory({ *type*, *history* })
+### syncRouterHistory(history: any, key?: string)
 
-同步历史记录。
+同步 `Router` 的 `history` 。
 
-- `type` - 默认 `hash`，可选 `hash` `browser` 或 `memory`
-- `history` - 自定义 `history`。`type` 不满足的情况下才使用
+- `history` - [history](https://github.com/ReactTraining/history) 对象。
+- `key` - 可选，用于多个 `history` 实例的键值。
 
 ### routerHistory
 
-```javascript
-import { routerHistory } from 'router-store';
-```
+`history`  对象。
 
-`routerHistory` 即 `react-router` 的 `history`  对象。
+### getRouterHistory(key?:string)
 
-### syncHistoryWithFlag(*flag*, { *type*, *history* })
+获取 `history` 。
 
-同步历史记录，支持多个实例。通过 `getRouterHistoryByFlag ` 方法获取 `history`。
-
-`type` `history` 同 `syncHistory ` 参数
-
-### getRouterHistoryByFlag(*flag*)
-
-获取通过 `syncHistoryWithFlag ` 方法设置的 `history`，返回 `react-router` 的 `history` 对象。
-
-## 其他示例
-
-- [自定义history](#自定义history)
-- [多个实例](多个实例) - 适用于多视图多个路由配置
-
-### 自定义 `history`
-
-```javascript
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Router } from 'react-router';
-import { createHashHistory } from "history";
-import { syncHistory } from "router-store";
-
-const hashHistory = createHashHistory();
-const history = syncHistory({history: hashHistory});
-
-ReactDOM.render(
-  <Router history={history}>
-    {
-      // 页面路由
-    }
-  </Router>,
-  document.getElementById('root')
-);
-```
-
-### 多个实例
+## 示例：多个 `history` 
 
 `parentView.js`
 
 ```javascript
 // ...
-import { syncHistoryWithFlag } from "router-store";
+import { createHashHistory } from "history";
+import { syncRouterHistory } from "router-store";
 
-const history = syncHistoryWithFlag('parent');
+const hashHistory = createHashHistory();
+
+syncRouterHistory(hashHistory, 'parent');
 
 ReactDOM.render(
-  <Router history={history}>
+  <Router history={hashHistory}>
     {
       // 页面路由
     }
@@ -139,9 +99,12 @@ ReactDOM.render(
 
 ```javascript
 // ...
-import { syncHistoryWithFlag } from "router-store";
+import { createHashHistory } from "history";
+import { syncRouterHistory } from "router-store";
 
-const history = syncHistoryWithFlag('child');
+const hashHistory = createHashHistory();
+
+syncRouterHistory(hashHistory, 'child');
 
 ReactDOM.render(
   <Router history={history}>
@@ -156,14 +119,8 @@ ReactDOM.render(
 `request.js`
 
 ```javascript
-import { getRouterHistoryByFlag } from 'router-store';
+import { getRouterHistory } from 'router-store';
 
-const parentRouterHistory = getRouterHistoryByFlag('parent');
-const childRouterHistory = getRouterHistoryByFlag('child');
+const parentRouterHistory = getRouterHistory('parent');
+const childRouterHistory = getRouterHistory('child');
 ```
-
-
-
-
-
-
